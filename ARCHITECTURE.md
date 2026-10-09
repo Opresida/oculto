@@ -37,7 +37,7 @@ public/
 
 ## Banco
 
-Uma tabela, criada no primeiro uso (`src/lib/db.ts`):
+Projeto "oculto" no Neon (us-east-1), Postgres 18. Uma tabela, criada no primeiro uso (`src/lib/db.ts`):
 
 ```sql
 oculto_lista_vip (id bigserial, nome text, whatsapp text unique, criado_em timestamptz)

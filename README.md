@@ -28,7 +28,7 @@ para o repositório. Para abrir a portaria no computador: `LISTA_SENHA=uma-senha
 
 1. Importar este repositório na Vercel (projeto novo, configuração padrão de Next.js).
 2. Em *Settings → Environment Variables*, criar:
-   - `DATABASE_URL`: endereço de conexão do banco Neon;
+   - `DATABASE_URL`: endereço de conexão do projeto "oculto" no Neon (painel do Neon → Connect, com *Connection pooling* ligado);
    - `LISTA_SENHA`: senha da portaria (6 caracteres ou mais);
    - `SITE_URL` (opcional): endereço final, se houver domínio próprio.
 3. Publicar. A tabela `oculto_lista_vip` se cria sozinha no primeiro nome enviado.
@@ -38,6 +38,6 @@ Modelo das variáveis em `.env.example`.
 ## Estado
 
 - Lista aceita nomes até **domingo 11.10.2026, 23h de Manaus**; depois disso o formulário fecha sozinho.
-- Banco temporário: ao fim do evento, baixar a planilha em `/lista` e apagar a tabela.
+- Banco: projeto "oculto" no Neon (us-east-1). É temporário: ao fim do evento, baixar a planilha em `/lista` e apagar o projeto.
 
 Mais detalhes: `CONTEXT.md` (regras e decisões), `ARCHITECTURE.md` (mapa do código), `TODO.md`.

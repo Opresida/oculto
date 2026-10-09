@@ -27,6 +27,7 @@ Conferir a página a 390 px e a 1440 px: sem rolagem lateral e sem conteúdo cor
 
 - Porta do projeto: 3300. O servidor de desenvolvimento pode ficar vivo depois de parado; conferir a porta.
 - `.data/` (banco local) e `.conferencia/` (capturas) não vão para o repositório.
+- Skills do Neon instaladas em `.claude/skills/` (`neon`, `neon-postgres`); a CLI é `npx neon@latest`.
 - Segredos só na Vercel. Nunca escrever `DATABASE_URL` ou `LISTA_SENHA` em arquivo versionado, log ou resposta.
 - Commit e push: só quando o Humberto pedir. Deploy é pela Vercel, a partir do repositório.
 - Não mudar regra da lista nem texto comercial sem o Humberto confirmar.
