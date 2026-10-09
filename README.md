@@ -37,6 +37,7 @@ Modelo das variáveis em `.env.example`.
 
 ## Estado
 
+- No ar: https://oculto-omega.vercel.app (portaria em `/lista`). Cada push na `main` publica sozinho.
 - Lista aceita nomes até **domingo 11.10.2026, 23h de Manaus**; depois disso o formulário fecha sozinho.
 - Banco: projeto "oculto" no Neon (us-east-1). É temporário: ao fim do evento, baixar a planilha em `/lista` e apagar o projeto.
 
