@@ -26,7 +26,7 @@ src/
     revela.tsx            entrada das seções ao chegar na tela
     rodape.tsx            Royals, Allnight, Lounge Sertanejo e a assinatura BrandSquad
   lib/
-    evento.ts             TODOS os dados do evento: textos, prazo da lista, link de ingresso, artistas
+    evento.ts             TODOS os dados do evento: textos, prazo da lista, link de ingresso, artistas (ARTISTAS = o trio; BONUS = atração bônus)
     db.ts                 conexão: Neon em produção, PGlite no computador; cria a tabela sozinho
     lista.ts              limpar e validar nome/WhatsApp/e-mail; gravar, listar, confirmar presença, remover
     painel.ts             contas do comparecimento (funções puras): taxa, chegadas por meia hora, inscrições por dia, frases

@@ -32,4 +32,10 @@ export const ARTISTAS: Artista[] = [
   { id: 'bertolossi', nome: 'DJ BERTOLOSSI', selo: 'NO LINE-UP', foto: '/img/bertolossi.webp', largura: 949, altura: 1300 },
 ];
 
+/**
+ * Atração bônus: confirmada em 2026-10-09, depois do line-up fechado. Fica FORA de ARTISTAS de propósito: o trio
+ * do topo (e toda montagem com os três) não muda; ela aparece só na seção do line-up, em destaque próprio.
+ */
+export const BONUS: Artista = { id: 'diego', nome: 'DIEGO HENRIQUE', selo: 'ATRAÇÃO BÔNUS', foto: '/img/diego.webp', largura: 857, altura: 1300 };
+
 export const SITE_URL = process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'http://localhost:3300');

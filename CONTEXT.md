@@ -5,6 +5,7 @@
 - **O.C.U.L.T.O**, 4ª edição. Realização: Royals Entretenimento. Local: Allnight (Manaus). Apoio: Lounge Sertanejo.
 - **Domingo, 11.10.2026**, véspera de feriado.
 - Line-up: **Flakkë** (artista principal: sempre na frente, no centro e maior), **Jyou Guerra**, **DJ Bertolossi**.
+- **Atração bônus: Diego Henrique** (confirmada em 2026-10-09). Aparece só na seção do line-up, em bloco próprio; o trio do topo NÃO muda (pedido do Humberto).
 - Ingressos: Shop Ingressos (endereço em `src/lib/evento.ts`).
 
 ## Decisões do Humberto (2026-10-08)

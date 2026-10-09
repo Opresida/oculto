@@ -6,7 +6,7 @@ import { LogoVivo } from '@/components/logo-vivo';
 import { Revela } from '@/components/revela';
 import { Rodape } from '@/components/rodape';
 import { Trio } from '@/components/trio';
-import { ARTISTAS, EVENTO, INGRESSOS } from '@/lib/evento';
+import { ARTISTAS, BONUS, EVENTO, INGRESSOS } from '@/lib/evento';
 
 // Página do evento. Objetivo principal: nome na lista VIP. Objetivo secundário: venda de ingresso.
 // Ordem: abertura (4 s) → topo com os artistas e a contagem → fitas → line-up → lista → ingressos → assinaturas.
@@ -94,6 +94,29 @@ export default function Pagina() {
               </Revela>
             ))}
           </div>
+
+          {/* atração bônus: entrou depois do line-up fechado. Tem destaque próprio e não mexe no trio do topo. */}
+          <Revela efeito="acende" className="relative mt-4 overflow-hidden border border-prata/50 bg-grafite/40">
+            <div className="grid items-end sm:grid-cols-[1.15fr_1fr]">
+              <div className="relative z-10 order-2 -mt-8 px-5 pb-7 sm:order-1 sm:mt-0 sm:px-10 sm:py-12">
+                <p className="rotulo flex items-center gap-2 text-prata">
+                  <span className="h-2 w-2 bg-prata-clara" aria-hidden />
+                  {BONUS.selo}
+                </p>
+                <h3 className="titulo mt-3 text-3xl text-luz sm:text-5xl">{BONUS.nome}</h3>
+                <p className="mt-4 max-w-sm text-prata">Mais uma atração confirmada para o {EVENTO.dataExtenso}.</p>
+              </div>
+              {/* overflow-clip (e não hidden): a foto é mais alta que a caixa, e uma caixa "hidden" ainda pode ser rolada por dentro */}
+              <div className="relative order-1 h-80 overflow-clip sm:order-2 sm:h-[26rem]">
+                <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 60% 55% at 50% 42%, rgba(255,255,255,.22) 0%, transparent 72%)' }} aria-hidden />
+                <span className="titulo absolute left-3 top-3 text-[9rem] leading-none text-luz/10 sm:left-0 sm:text-[13rem]" aria-hidden>+1</span>
+                {/* eslint-disable-next-line @next/next/no-img-element -- recorte com transparência, já em WebP */}
+                <img src={BONUS.foto} alt={BONUS.nome} width={BONUS.largura} height={BONUS.altura} loading="lazy" className="absolute -bottom-[14%] left-1/2 h-[112%] w-auto max-w-none -translate-x-1/2 object-contain" />
+                {/* escurece a base na cor do cartão (não em preto puro), para o texto não cair em cima da camisa branca nem aparecer uma faixa */}
+                <div className="absolute inset-x-0 bottom-0 h-2/5" style={{ background: 'linear-gradient(180deg, rgba(14,14,14,0) 0%, rgba(14,14,14,.86) 62%, #0e0e0e 100%)' }} aria-hidden />
+              </div>
+            </div>
+          </Revela>
         </section>
 
         {/* ——— lista VIP ——— */}
