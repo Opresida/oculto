@@ -9,8 +9,8 @@ import { ARTISTAS } from '@/lib/evento';
 
 // posição de cada um dentro do quadro (em % da largura / altura do quadro) e quanto ele se mexe
 const LUGAR: Record<string, { esquerda: number; altura: number; fundo: number; atraso: number }> = {
-  jyou: { esquerda: 21, altura: 86, fundo: 10, atraso: 150 },
-  bertolossi: { esquerda: 80, altura: 83, fundo: 10, atraso: 300 },
+  jyou: { esquerda: 19, altura: 88, fundo: 10, atraso: 150 },
+  bertolossi: { esquerda: 83, altura: 90, fundo: 10, atraso: 300 },
   flakke: { esquerda: 50, altura: 96, fundo: 22, atraso: 520 },
 };
 const ORDEM = ['jyou', 'bertolossi', 'flakke'];

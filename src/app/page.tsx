@@ -81,7 +81,7 @@ export default function Pagina() {
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse 70% 55% at 50% 40%, rgba(255,255,255,.2) 0%, transparent 72%)' }} aria-hidden />
                   {/* eslint-disable-next-line @next/next/no-img-element -- recorte com transparência, já em WebP */}
-                  <img src={a.foto} alt={a.nome} width={a.largura} height={a.altura} loading="lazy" className="absolute bottom-0 left-1/2 h-[96%] w-auto max-w-none -translate-x-1/2 object-contain" />
+                  <img src={a.foto} alt={a.nome} width={a.largura} height={a.altura} loading="lazy" className="absolute left-1/2 w-auto max-w-none -translate-x-1/2 object-contain" style={{ height: `${96 * (a.zoomCartao ?? 1)}%`, bottom: `${-96 * ((a.zoomCartao ?? 1) - 1)}%` }} />
                   <div className="absolute inset-x-0 bottom-0 h-1/3" style={{ background: 'linear-gradient(180deg, transparent, #050505)' }} aria-hidden />
                 </div>
                 <div className="relative -mt-12 px-5 pb-6">
