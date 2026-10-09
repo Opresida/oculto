@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# O.C.U.L.T.O · página do evento
 
-## Getting Started
+Página da 4ª edição da festa O.C.U.L.T.O (Royals Entretenimento · domingo 11.10.2026 · Allnight, Manaus).
+Objetivo principal: colocar nomes na **lista VIP**. Objetivo secundário: levar para a compra de ingresso.
 
-First, run the development server:
+Feita pela BrandSquad. Next.js 16 (App Router) + Tailwind 4, hospedada na Vercel, banco no Neon.
+
+## Rodar no computador
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev          # http://localhost:3300
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Sem `DATABASE_URL`, o desenvolvimento usa um Postgres embutido (PGlite) na pasta `.data/`, que não vai
+para o repositório. Para abrir a portaria no computador: `LISTA_SENHA=uma-senha pnpm dev`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Rotas
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Rota | O que é |
+|---|---|
+| `/` | Página do evento: abertura de 4 s, artistas, contagem, formulário da lista, ingressos |
+| `/lista` | Portaria: a lista de nomes, com busca, retirada de nome e planilha. Pede senha |
+| `/lista/csv` | Planilha da lista (abre no Excel). Só com a portaria aberta |
+| `POST /api/lista` | Recebe nome + WhatsApp do formulário |
 
-## Learn More
+## Publicar (Vercel)
 
-To learn more about Next.js, take a look at the following resources:
+1. Importar este repositório na Vercel (projeto novo, configuração padrão de Next.js).
+2. Em *Settings → Environment Variables*, criar:
+   - `DATABASE_URL`: endereço de conexão do banco Neon;
+   - `LISTA_SENHA`: senha da portaria (6 caracteres ou mais);
+   - `SITE_URL` (opcional): endereço final, se houver domínio próprio.
+3. Publicar. A tabela `oculto_lista_vip` se cria sozinha no primeiro nome enviado.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Modelo das variáveis em `.env.example`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Estado
 
-## Deploy on Vercel
+- Lista aceita nomes até **domingo 11.10.2026, 23h de Manaus**; depois disso o formulário fecha sozinho.
+- Banco temporário: ao fim do evento, baixar a planilha em `/lista` e apagar a tabela.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Mais detalhes: `CONTEXT.md` (regras e decisões), `ARCHITECTURE.md` (mapa do código), `TODO.md`.

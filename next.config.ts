@@ -1,7 +1,8 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // PGlite (Postgres embutido, só no desenvolvimento) carrega WASM do disco: não pode ser empacotado.
+  serverExternalPackages: ['@electric-sql/pglite'],
 };
 
 export default nextConfig;
