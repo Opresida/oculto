@@ -3,7 +3,7 @@
 ## Pendente
 
 - [ ] Domínio próprio, se o cliente quiser; nesse caso, preencher `SITE_URL`.
-- [ ] Depois do evento (a partir de 12/10): baixar a planilha em `/lista` e apagar o projeto "oculto" no Neon.
+- [ ] Depois do evento (a partir de 12/10): ver o painel em `/lista/painel`, baixar a planilha em `/lista` e apagar o projeto "oculto" no Neon (a cópia de segurança vai junto).
 
 ## Concluído
 
@@ -15,3 +15,4 @@
 - [x] 2026-10-08 · No ar em https://oculto-omega.vercel.app, com `DATABASE_URL` e `LISTA_SENHA` configuradas; envio de teste gravou no Neon e foi apagado. Corrigido o 404 do primeiro deploy (`vercel.json`).
 - [x] 2026-10-08 · Foto nova do Flakkë (loiro, jaqueta de couro) no topo, no line-up e na imagem de compartilhamento; trio reajustado para a jaqueta não cobrir o rosto do DJ Bertolossi.
 - [x] 2026-10-08 · E-mail acrescentado à lista: formulário, validação, banco (coluna nova, criada sozinha), portaria e planilha.
+- [x] 2026-10-09 · Presença na portaria: botão CONFIRMAR (e DESFAZER), filtro todos / faltam / presentes, régua de presentes, colunas novas na planilha e painel de comparecimento em `/lista/painel`. Banco: coluna `presente_em`, com cópia de segurança antes (branch `antes-presenca-2026-10-09` no Neon).

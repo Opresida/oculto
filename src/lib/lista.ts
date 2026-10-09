@@ -1,7 +1,7 @@
-// Regras da lista VIP: validar, gravar sem repetir, listar e remover.
+// Regras da lista VIP: validar, gravar sem repetir, listar, confirmar presença e remover.
 import { banco } from './db';
 
-export type Convidado = { id: number; nome: string; whatsapp: string; email: string; criadoEm: string };
+export type Convidado = { id: number; nome: string; whatsapp: string; email: string; criadoEm: string; /** hora em que a portaria confirmou a chegada; null = ainda não chegou */ presenteEm: string | null };
 
 /** Nome com espaços arrumados e iniciais maiúsculas ("de", "da", "dos" ficam minúsculos). */
 export function arrumarNome(bruto: string): string {
@@ -64,8 +64,20 @@ export async function entrarNaLista(nome: string, whatsapp: string, email: strin
 
 export async function listar(): Promise<Convidado[]> {
   const sql = await banco();
-  const linhas = await sql('select id, nome, whatsapp, email, criado_em from oculto_lista_vip order by lower(nome), id');
-  return linhas.map((l) => ({ id: Number(l.id), nome: String(l.nome), whatsapp: String(l.whatsapp), email: String(l.email ?? ''), criadoEm: new Date(l.criado_em as string).toISOString() }));
+  const linhas = await sql('select id, nome, whatsapp, email, criado_em, presente_em from oculto_lista_vip order by lower(nome), id');
+  return linhas.map((l) => ({ id: Number(l.id), nome: String(l.nome), whatsapp: String(l.whatsapp), email: String(l.email ?? ''), criadoEm: new Date(l.criado_em as string).toISOString(), presenteEm: l.presente_em ? new Date(l.presente_em as string).toISOString() : null }));
+}
+
+/** Marca a chegada. Tocar duas vezes não muda a hora: vale a primeira confirmação. */
+export async function confirmarPresenca(id: number): Promise<void> {
+  const sql = await banco();
+  await sql('update oculto_lista_vip set presente_em = coalesce(presente_em, now()) where id = $1', [id]);
+}
+
+/** Desfaz uma confirmação feita por engano. O nome continua na lista. */
+export async function desfazerPresenca(id: number): Promise<void> {
+  const sql = await banco();
+  await sql('update oculto_lista_vip set presente_em = null where id = $1', [id]);
 }
 
 export async function remover(id: number): Promise<void> {

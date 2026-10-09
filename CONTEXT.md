@@ -13,6 +13,7 @@
 - Campos do formulário: **nome + WhatsApp + e-mail** (o e-mail foi pedido pelo Humberto na noite de 08/10, com o site já no ar). Nada além disso.
 - Regra da lista: **entrada gratuita até as 23h** para quem está na lista.
 - O formulário aceita nomes **até domingo, 23h** (horário de Manaus). Depois fecha sozinho.
+- (2026-10-09) A portaria **confirma a presença** de cada nome, para comparar quem se inscreveu com quem de fato foi; o resultado aparece em gráficos no painel (`/lista/painel`).
 - Front na Vercel, em **projeto novo**; banco **temporário** no Neon.
 - Repositório: `github.com/Opresida/oculto`.
 - Página interativa, com abertura de 4 segundos, fotos dos artistas com movimento, logos do evento e a logo da BrandSquad.

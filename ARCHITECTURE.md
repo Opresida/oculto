@@ -14,7 +14,8 @@ src/
     opengraph-image.png   imagem que aparece ao compartilhar o link (1200×630)
     api/lista/route.ts    POST do formulário
     lista/                portaria: page.tsx (senha + lista), actions.ts (entrar, sair, tirar nome),
-                          tabela.tsx (busca), csv/route.ts (planilha)
+                          tabela.tsx (busca, filtro e CONFIRMAR / DESFAZER / TIRAR), csv/route.ts (planilha),
+                          painel/page.tsx + painel/graficos.tsx (comparecimento em gráficos)
   components/
     abertura.tsx          tela de entrada de 4 s (uma vez por visita); avisa "oculto:aberto" ao sair
     logo-vivo.tsx         roda a peça de motion da logo e escala para a largura disponível
@@ -27,7 +28,8 @@ src/
   lib/
     evento.ts             TODOS os dados do evento: textos, prazo da lista, link de ingresso, artistas
     db.ts                 conexão: Neon em produção, PGlite no computador; cria a tabela sozinho
-    lista.ts              limpar e validar nome/WhatsApp/e-mail; gravar, listar, remover
+    lista.ts              limpar e validar nome/WhatsApp/e-mail; gravar, listar, confirmar presença, remover
+    painel.ts             contas do comparecimento (funções puras): taxa, chegadas por meia hora, inscrições por dia, frases
     sessao.ts             sessão da portaria (cookie assinado com LISTA_SENHA, 12 h)
   motion/                 peças copiadas do estúdio Remotion (D:\dev\remotion-studio): funções puras do quadro
 public/
@@ -40,8 +42,10 @@ public/
 Projeto "oculto" no Neon (us-east-1), Postgres 18. Uma tabela, criada no primeiro uso (`src/lib/db.ts`):
 
 ```sql
-oculto_lista_vip (id bigserial, nome text, whatsapp text unique, criado_em timestamptz, email text)
+oculto_lista_vip (id bigserial, nome text, whatsapp text unique, criado_em timestamptz, email text, presente_em timestamptz)
 ```
+
+`presente_em` vazio = ainda não chegou; preenchido = a hora em que a portaria tocou em CONFIRMAR (tocar duas vezes mantém a primeira hora). Colunas novas entram por `alter table ... add column if not exists` em `db.ts`: quem já está na lista não é tocado.
 
 O WhatsApp é único: a mesma pessoa enviando duas vezes não duplica, só recebe "você já está na lista".
 

@@ -20,8 +20,9 @@ para o repositório. Para abrir a portaria no computador: `LISTA_SENHA=uma-senha
 | Rota | O que é |
 |---|---|
 | `/` | Página do evento: abertura de 4 s, artistas, contagem, formulário da lista, ingressos |
-| `/lista` | Portaria: a lista de nomes, com busca, retirada de nome e planilha. Pede senha |
-| `/lista/csv` | Planilha da lista (abre no Excel). Só com a portaria aberta |
+| `/lista` | Portaria: a lista de nomes, com busca, **confirmação de presença**, retirada de nome e planilha. Pede senha |
+| `/lista/painel` | Comparecimento: inscritos × presentes, chegadas por horário, inscrições por dia e leituras em frases. Mesma senha |
+| `/lista/csv` | Planilha da lista, com as colunas "Compareceu" e "Chegou em" (abre no Excel). Só com a portaria aberta |
 | `POST /api/lista` | Recebe nome + WhatsApp + e-mail do formulário |
 
 ## Publicar (Vercel)

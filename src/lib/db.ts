@@ -14,6 +14,8 @@ const TABELA = `
   )`;
 // o e-mail entrou depois (2026-10-08): a coluna é acrescentada em banco que já existe, sem perder nada
 const COLUNA_EMAIL = 'alter table oculto_lista_vip add column if not exists email text';
+// presença na portaria (2026-10-09): vazio = ainda não chegou; preenchido = a hora em que a portaria confirmou
+const COLUNA_PRESENCA = 'alter table oculto_lista_vip add column if not exists presente_em timestamptz';
 
 export class BancoIndisponivel extends Error {}
 
@@ -37,6 +39,7 @@ async function abrir(): Promise<Sql> {
   // a tabela se cria sozinha no primeiro uso: não há passo de migração para esquecer
   await sql(TABELA);
   await sql(COLUNA_EMAIL);
+  await sql(COLUNA_PRESENCA);
   return sql;
 }
 

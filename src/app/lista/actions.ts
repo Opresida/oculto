@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { remover } from '@/lib/lista';
+import { confirmarPresenca, desfazerPresenca, remover } from '@/lib/lista';
 import { COOKIE, logado, novaSessao, senhaConfere } from '@/lib/sessao';
 
 export async function entrar(dados: FormData) {
@@ -19,9 +19,32 @@ export async function sair() {
   redirect('/lista');
 }
 
+const idDe = (dados: FormData) => {
+  const id = Number(dados.get('id'));
+  return Number.isInteger(id) && id > 0 ? id : null;
+};
+const atualizar = () => {
+  revalidatePath('/lista');
+  revalidatePath('/lista/painel');
+};
+
+export async function confirmar(dados: FormData) {
+  if (!(await logado())) redirect('/lista');
+  const id = idDe(dados);
+  if (id) await confirmarPresenca(id);
+  atualizar();
+}
+
+export async function desfazer(dados: FormData) {
+  if (!(await logado())) redirect('/lista');
+  const id = idDe(dados);
+  if (id) await desfazerPresenca(id);
+  atualizar();
+}
+
 export async function removerDaLista(dados: FormData) {
   if (!(await logado())) redirect('/lista');
-  const id = Number(dados.get('id'));
-  if (Number.isInteger(id) && id > 0) await remover(id);
-  revalidatePath('/lista');
+  const id = idDe(dados);
+  if (id) await remover(id);
+  atualizar();
 }
