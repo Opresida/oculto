@@ -14,3 +14,4 @@
 - [x] 2026-10-08 · Conferência no computador (1440 px) e no celular (390 px), build de produção e imagem de compartilhamento.
 - [x] 2026-10-08 · No ar em https://oculto-omega.vercel.app, com `DATABASE_URL` e `LISTA_SENHA` configuradas; envio de teste gravou no Neon e foi apagado. Corrigido o 404 do primeiro deploy (`vercel.json`).
 - [x] 2026-10-08 · Foto nova do Flakkë (loiro, jaqueta de couro) no topo, no line-up e na imagem de compartilhamento; trio reajustado para a jaqueta não cobrir o rosto do DJ Bertolossi.
+- [x] 2026-10-08 · E-mail acrescentado à lista: formulário, validação, banco (coluna nova, criada sozinha), portaria e planilha.

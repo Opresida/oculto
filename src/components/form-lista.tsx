@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { EVENTO, FECHA_LISTA, INGRESSOS } from '@/lib/evento';
 
-// Formulário da lista VIP: nome e WhatsApp. Depois do horário (domingo, 23h de Manaus) ele dá lugar
+// Formulário da lista VIP: nome, WhatsApp e e-mail. Depois do horário (domingo, 23h de Manaus) ele dá lugar
 // ao aviso de lista encerrada; o servidor também recusa, então não adianta mexer no relógio do celular.
 
 type Estado = { fase: 'livre' } | { fase: 'enviando' } | { fase: 'erro'; texto: string } | { fase: 'dentro'; nome: string; jaEstava: boolean };
@@ -42,7 +42,7 @@ export function FormLista() {
       const r = await fetch('/api/lista', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome: dados.get('nome'), whatsapp: dados.get('whatsapp'), aceite: dados.get('aceite') === 'on', site: dados.get('site') }),
+        body: JSON.stringify({ nome: dados.get('nome'), whatsapp: dados.get('whatsapp'), email: dados.get('email'), aceite: dados.get('aceite') === 'on', site: dados.get('site') }),
       });
       const j = (await r.json()) as { ok: boolean; nome?: string; jaEstava?: boolean; erro?: string; encerrada?: boolean };
       if (j.encerrada) setAberta(false);
@@ -114,6 +114,10 @@ export function FormLista() {
         <label htmlFor="whatsapp" className="rotulo text-prata">WHATSAPP</label>
         <input id="whatsapp" name="whatsapp" required inputMode="tel" autoComplete="tel-national" placeholder="(92) 99999-9999" value={whatsapp} onChange={(e) => setWhatsapp(mascara(e.target.value))} className={`${campo} mt-2`} />
       </div>
+      <div>
+        <label htmlFor="email" className="rotulo text-prata">E-MAIL</label>
+        <input id="email" name="email" type="email" required maxLength={120} inputMode="email" autoComplete="email" autoCapitalize="none" spellCheck={false} placeholder="voce@email.com" className={`${campo} mt-2`} />
+      </div>
       {/* campo-isca: fora da tela e fora da ordem do teclado; só robô preenche */}
       <div className="absolute left-[-9999px]" aria-hidden>
         <label htmlFor="site">Site</label>
@@ -121,7 +125,7 @@ export function FormLista() {
       </div>
       <label className="flex cursor-pointer items-start gap-3 text-sm text-prata">
         <input type="checkbox" name="aceite" required className="mt-0.5 h-5 w-5 shrink-0 accent-[#e4e4e1]" />
-        <span>Concordo em usar meu nome e WhatsApp para a lista de entrada e os avisos desta festa.</span>
+        <span>Concordo em usar meu nome, WhatsApp e e-mail para a lista de entrada e os avisos desta festa.</span>
       </label>
       {estado.fase === 'erro' && <p className="border border-prata-clara px-4 py-3 text-sm text-luz" role="alert">{estado.texto}</p>}
       <button disabled={enviando} className="titulo mt-1 flex cursor-pointer items-center justify-center gap-3 bg-prata-clara px-6 py-5 text-base text-preto transition-colors hover:bg-white disabled:cursor-wait disabled:opacity-70">

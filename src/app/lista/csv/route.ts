@@ -10,8 +10,8 @@ export async function GET() {
   if (!(await logado())) return new Response('Entre em /lista com a senha.', { status: 401 });
   const convidados = await listar();
   const linhas = [
-    ['Nome', 'WhatsApp', 'Entrou na lista em'].map(celula).join(';'),
-    ...convidados.map((c) => [c.nome, mostrarWhatsapp(c.whatsapp), new Date(c.criadoEm).toLocaleString('pt-BR', { timeZone: 'America/Manaus' })].map(celula).join(';')),
+    ['Nome', 'WhatsApp', 'E-mail', 'Entrou na lista em'].map(celula).join(';'),
+    ...convidados.map((c) => [c.nome, mostrarWhatsapp(c.whatsapp), c.email, new Date(c.criadoEm).toLocaleString('pt-BR', { timeZone: 'America/Manaus' })].map(celula).join(';')),
   ];
   return new Response('﻿' + linhas.join('\r\n'), {
     headers: { 'Content-Type': 'text/csv; charset=utf-8', 'Content-Disposition': 'attachment; filename="oculto-lista-vip.csv"', 'Cache-Control': 'no-store' },

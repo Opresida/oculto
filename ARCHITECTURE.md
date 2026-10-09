@@ -27,7 +27,7 @@ src/
   lib/
     evento.ts             TODOS os dados do evento: textos, prazo da lista, link de ingresso, artistas
     db.ts                 conexão: Neon em produção, PGlite no computador; cria a tabela sozinho
-    lista.ts              limpar e validar nome/WhatsApp; gravar, listar, remover
+    lista.ts              limpar e validar nome/WhatsApp/e-mail; gravar, listar, remover
     sessao.ts             sessão da portaria (cookie assinado com LISTA_SENHA, 12 h)
   motion/                 peças copiadas do estúdio Remotion (D:\dev\remotion-studio): funções puras do quadro
 public/
@@ -40,7 +40,7 @@ public/
 Projeto "oculto" no Neon (us-east-1), Postgres 18. Uma tabela, criada no primeiro uso (`src/lib/db.ts`):
 
 ```sql
-oculto_lista_vip (id bigserial, nome text, whatsapp text unique, criado_em timestamptz)
+oculto_lista_vip (id bigserial, nome text, whatsapp text unique, criado_em timestamptz, email text)
 ```
 
 O WhatsApp é único: a mesma pessoa enviando duas vezes não duplica, só recebe "você já está na lista".

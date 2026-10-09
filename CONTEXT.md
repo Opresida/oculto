@@ -10,7 +10,7 @@
 ## Decisões do Humberto (2026-10-08)
 
 - A página existe para **capturar nomes para a lista VIP**; a venda de ingresso é a segunda chamada.
-- Campos do formulário: **nome + WhatsApp**. Nada além disso.
+- Campos do formulário: **nome + WhatsApp + e-mail** (o e-mail foi pedido pelo Humberto na noite de 08/10, com o site já no ar). Nada além disso.
 - Regra da lista: **entrada gratuita até as 23h** para quem está na lista.
 - O formulário aceita nomes **até domingo, 23h** (horário de Manaus). Depois fecha sozinho.
 - Front na Vercel, em **projeto novo**; banco **temporário** no Neon.
@@ -29,5 +29,5 @@
 ## Cuidados
 
 - Não inventar condição comercial nem regra de entrada: o texto diz só o que o Humberto confirmou.
-- Os dados da lista são de pessoas reais (nome e telefone): ficam atrás da senha da portaria, e o banco é apagado depois do evento.
+- Os dados da lista são de pessoas reais (nome, telefone e e-mail): ficam atrás da senha da portaria, e o banco é apagado depois do evento.
 - Segredos (`DATABASE_URL`, `LISTA_SENHA`) vivem só na Vercel. Nunca no repositório.

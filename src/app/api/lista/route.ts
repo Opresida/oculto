@@ -39,11 +39,11 @@ export async function POST(request: Request) {
   const ip = (request.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || 'local';
   if (passouDoLimite(ip)) return responder({ ok: false, erro: 'Muitos envios seguidos. Tente de novo em alguns minutos.' }, 429);
 
-  const dados = validar(corpo.nome, corpo.whatsapp);
+  const dados = validar(corpo.nome, corpo.whatsapp, corpo.email);
   if ('erro' in dados) return responder({ ok: false, erro: dados.erro }, 400);
 
   try {
-    return responder(await entrarNaLista(dados.nome, dados.whatsapp));
+    return responder(await entrarNaLista(dados.nome, dados.whatsapp, dados.email));
   } catch (erro) {
     console.error('lista: falha ao gravar', erro instanceof BancoIndisponivel ? erro.message : erro);
     return responder({ ok: false, erro: 'A lista está fora do ar neste momento. Tente de novo em instantes.' }, 503);

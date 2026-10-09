@@ -9,7 +9,7 @@ const semAcento = (t: string) => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLo
 const mostrarFone = (d: string) => (d.length === 11 ? `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}` : `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`);
 const hora = (iso: string) => new Date(iso).toLocaleString('pt-BR', { timeZone: 'America/Manaus', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
 
-/** Lista da portaria: busca enquanto digita (sem acento, por nome ou telefone) e botão de atualizar. */
+/** Lista da portaria: busca enquanto digita (sem acento, por nome, telefone ou e-mail) e botão de atualizar. */
 export function Tabela({ convidados }: { convidados: Convidado[] }) {
   const [busca, setBusca] = useState('');
   const router = useRouter();
@@ -17,7 +17,7 @@ export function Tabela({ convidados }: { convidados: Convidado[] }) {
     const b = semAcento(busca.trim());
     if (!b) return convidados;
     const digitos = b.replace(/\D/g, '');
-    return convidados.filter((c) => semAcento(c.nome).includes(b) || (digitos.length >= 3 && c.whatsapp.includes(digitos)));
+    return convidados.filter((c) => semAcento(c.nome).includes(b) || (digitos.length >= 3 && c.whatsapp.includes(digitos)) || (b.length >= 3 && c.email.includes(b)));
   }, [busca, convidados]);
 
   return (
@@ -26,8 +26,8 @@ export function Tabela({ convidados }: { convidados: Convidado[] }) {
         <input
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
-          placeholder="Buscar nome ou telefone"
-          aria-label="Buscar nome ou telefone"
+          placeholder="Buscar nome, telefone ou e-mail"
+          aria-label="Buscar nome, telefone ou e-mail"
           autoFocus
           className="min-w-0 flex-1 border border-fumaca bg-grafite px-4 py-3 text-lg text-luz outline-none placeholder:text-fumaca focus:border-prata-clara"
         />
@@ -48,6 +48,7 @@ export function Tabela({ convidados }: { convidados: Convidado[] }) {
               <p className="rotulo mt-1 text-fumaca">
                 {mostrarFone(c.whatsapp)} · {hora(c.criadoEm)}
               </p>
+              {c.email && <p className="mt-1 truncate text-sm text-apoio">{c.email}</p>}
             </div>
             <form
               action={removerDaLista}

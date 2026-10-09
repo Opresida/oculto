@@ -1,5 +1,5 @@
 // Dados do evento. Tudo que aparece na página sobre a festa sai daqui.
-// Regras da lista confirmadas pelo Humberto em 2026-10-08: nome + WhatsApp; entrada gratuita
+// Regras da lista confirmadas pelo Humberto em 2026-10-08: nome + WhatsApp + e-mail; entrada gratuita
 // pela lista até as 23h; a página aceita nomes até domingo às 23h (horário de Manaus).
 
 export const EVENTO = {

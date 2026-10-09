@@ -22,7 +22,7 @@ para o repositório. Para abrir a portaria no computador: `LISTA_SENHA=uma-senha
 | `/` | Página do evento: abertura de 4 s, artistas, contagem, formulário da lista, ingressos |
 | `/lista` | Portaria: a lista de nomes, com busca, retirada de nome e planilha. Pede senha |
 | `/lista/csv` | Planilha da lista (abre no Excel). Só com a portaria aberta |
-| `POST /api/lista` | Recebe nome + WhatsApp do formulário |
+| `POST /api/lista` | Recebe nome + WhatsApp + e-mail do formulário |
 
 ## Publicar (Vercel)
 

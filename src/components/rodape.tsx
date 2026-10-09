@@ -38,7 +38,7 @@ export function Rodape() {
         <p className="rotulo max-w-xl text-center leading-relaxed text-fumaca">
           {EVENTO.nome} · {EVENTO.edicao} · {EVENTO.dia} {EVENTO.data} · {EVENTO.local.toUpperCase()}, {EVENTO.cidade.toUpperCase()}
           <br />
-          Seu nome e WhatsApp são usados só para a lista de entrada e os avisos desta festa.
+          Seu nome, WhatsApp e e-mail são usados só para a lista de entrada e os avisos desta festa.
         </p>
 
         <a href="https://www.brandsquad.com.br" target="_blank" rel="noopener" className="flex flex-col items-center gap-3 opacity-80 transition-opacity hover:opacity-100">

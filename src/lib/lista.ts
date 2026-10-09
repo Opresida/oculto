@@ -1,7 +1,7 @@
 // Regras da lista VIP: validar, gravar sem repetir, listar e remover.
 import { banco } from './db';
 
-export type Convidado = { id: number; nome: string; whatsapp: string; criadoEm: string };
+export type Convidado = { id: number; nome: string; whatsapp: string; email: string; criadoEm: string };
 
 /** Nome com espaços arrumados e iniciais maiúsculas ("de", "da", "dos" ficam minúsculos). */
 export function arrumarNome(bruto: string): string {
@@ -30,32 +30,42 @@ export function arrumarWhatsapp(bruto: string): string | null {
   return d;
 }
 
+/** E-mail em minúsculas e sem espaços. Devolve null se não tiver cara de e-mail. */
+export function arrumarEmail(bruto: string): string | null {
+  const e = bruto.trim().toLowerCase();
+  if (e.length < 6 || e.length > 120) return null;
+  return /^[a-z0-9._%+-]+@[a-z0-9-]+(.[a-z0-9-]+)*.[a-z]{2,}$/.test(e) && !e.includes('..') ? e : null;
+}
+
 export const mostrarWhatsapp = (d: string) => (d.length === 11 ? `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}` : `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`);
 
 export type Entrada = { ok: true; nome: string; jaEstava: boolean } | { ok: false; erro: string };
 
-export function validar(nomeBruto: unknown, whatsappBruto: unknown): { nome: string; whatsapp: string } | { erro: string } {
-  if (typeof nomeBruto !== 'string' || typeof whatsappBruto !== 'string') return { erro: 'Preencha nome e WhatsApp.' };
+export function validar(nomeBruto: unknown, whatsappBruto: unknown, emailBruto: unknown): { nome: string; whatsapp: string; email: string } | { erro: string } {
+  if (typeof nomeBruto !== 'string' || typeof whatsappBruto !== 'string' || typeof emailBruto !== 'string') return { erro: 'Preencha nome, WhatsApp e e-mail.' };
   const nome = arrumarNome(nomeBruto);
   if (nome.length < 5 || nome.length > 80 || nome.split(' ').length < 2) return { erro: 'Escreva nome e sobrenome, como no documento.' };
   const whatsapp = arrumarWhatsapp(whatsappBruto);
   if (!whatsapp) return { erro: 'WhatsApp inválido. Use DDD + número.' };
-  return { nome, whatsapp };
+  const email = arrumarEmail(emailBruto);
+  if (!email) return { erro: 'E-mail inválido. Confira se digitou certo.' };
+  return { nome, whatsapp, email };
 }
 
-/** Grava o nome. Se o WhatsApp já está na lista, não duplica: devolve o nome que já estava. */
-export async function entrarNaLista(nome: string, whatsapp: string): Promise<Entrada> {
+/** Grava o nome. Se o WhatsApp já está na lista, não duplica: devolve o nome que já estava (e completa o e-mail, se faltava). */
+export async function entrarNaLista(nome: string, whatsapp: string, email: string): Promise<Entrada> {
   const sql = await banco();
-  const novo = await sql('insert into oculto_lista_vip (nome, whatsapp) values ($1, $2) on conflict (whatsapp) do nothing returning nome', [nome, whatsapp]);
+  const novo = await sql('insert into oculto_lista_vip (nome, whatsapp, email) values ($1, $2, $3) on conflict (whatsapp) do nothing returning nome', [nome, whatsapp, email]);
   if (novo.length > 0) return { ok: true, nome: String(novo[0].nome), jaEstava: false };
+  await sql('update oculto_lista_vip set email = $2 where whatsapp = $1 and email is null', [whatsapp, email]);
   const antigo = await sql('select nome from oculto_lista_vip where whatsapp = $1', [whatsapp]);
   return { ok: true, nome: String(antigo[0]?.nome ?? nome), jaEstava: true };
 }
 
 export async function listar(): Promise<Convidado[]> {
   const sql = await banco();
-  const linhas = await sql('select id, nome, whatsapp, criado_em from oculto_lista_vip order by lower(nome), id');
-  return linhas.map((l) => ({ id: Number(l.id), nome: String(l.nome), whatsapp: String(l.whatsapp), criadoEm: new Date(l.criado_em as string).toISOString() }));
+  const linhas = await sql('select id, nome, whatsapp, email, criado_em from oculto_lista_vip order by lower(nome), id');
+  return linhas.map((l) => ({ id: Number(l.id), nome: String(l.nome), whatsapp: String(l.whatsapp), email: String(l.email ?? ''), criadoEm: new Date(l.criado_em as string).toISOString() }));
 }
 
 export async function remover(id: number): Promise<void> {
