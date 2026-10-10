@@ -107,7 +107,7 @@ export default async function Painel() {
 
           <div className="mt-4 flex flex-col gap-4">
             <Colunas titulo="Chegadas por horário" nota="Confirmações da portaria, de meia em meia hora (horário de Manaus)." colunas={chegadas} vazio="Nenhuma chegada confirmada ainda." />
-            <Colunas titulo="Inscrições por dia" nota="Quantos se inscreveram em cada dia, e quantos desses vieram." colunas={porDia} vazio="Nenhuma inscrição ainda." />
+            <Colunas titulo="Inscrições por dia" nota={`Quantos se inscreveram pelo site em cada dia, e quantos desses vieram.${r.porFora.inscritos ? ` Fora deste gráfico: ${r.porFora.inscritos} nomes de listas que entraram por fora do site.` : ''}`} colunas={porDia} vazio="Nenhuma inscrição ainda." />
           </div>
         </>
       )}

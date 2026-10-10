@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import type { Convidado } from '@/lib/lista';
+import { nomeDaOrigem } from '@/lib/origens';
 import { confirmar, desfazer, removerDaLista } from './actions';
 
 const semAcento = (t: string) => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -58,9 +59,9 @@ export function Tabela({ convidados }: { convidados: Convidado[] }) {
             ATUALIZAR
           </button>
         </div>
-        <div className="mt-3 flex gap-2" role="group" aria-label="Mostrar">
+        <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Mostrar">
           {filtros.map(([id, nome, n]) => (
-            <button key={id} type="button" onClick={() => setFiltro(id)} aria-pressed={filtro === id} className={`rotulo cursor-pointer border px-3 py-2 ${filtro === id ? 'border-prata-clara bg-prata-clara text-preto' : 'border-fumaca text-prata hover:border-prata-clara hover:text-luz'}`}>
+            <button key={id} type="button" onClick={() => setFiltro(id)} aria-pressed={filtro === id} className={`rotulo cursor-pointer whitespace-nowrap border px-2.5 py-2 ${filtro === id ? 'border-prata-clara bg-prata-clara text-preto' : 'border-fumaca text-prata hover:border-prata-clara hover:text-luz'}`}>
               {nome} {n}
             </button>
           ))}
@@ -77,7 +78,7 @@ export function Tabela({ convidados }: { convidados: Convidado[] }) {
             <div className="min-w-0">
               <p className="truncate text-lg font-semibold text-luz">{c.nome}</p>
               <p className="rotulo mt-1 text-fumaca">
-                {mostrarFone(c.whatsapp)} · {quando(c.criadoEm)}
+                {c.origem === 'site' ? `${mostrarFone(c.whatsapp)} · ${quando(c.criadoEm)}` : <span className="text-apoio">{nomeDaOrigem(c.origem).toUpperCase()} · SÓ O NOME</span>}
               </p>
               {c.email && <p className="mt-1 truncate text-sm text-apoio">{c.email}</p>}
             </div>

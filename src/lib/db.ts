@@ -16,6 +16,11 @@ const TABELA = `
 const COLUNA_EMAIL = 'alter table oculto_lista_vip add column if not exists email text';
 // presença na portaria (2026-10-09): vazio = ainda não chegou; preenchido = a hora em que a portaria confirmou
 const COLUNA_PRESENCA = 'alter table oculto_lista_vip add column if not exists presente_em timestamptz';
+// origem (2026-10-09): 'site' = inscrição pelo formulário; outro valor = lista que entrou por fora, como exceção
+// (ex.: 'lista-lucas', os 68 nomes anotados antes de existir a lista digital). Essas listas só têm nome, por isso
+// o WhatsApp deixa de ser obrigatório NO BANCO; o formulário do site continua exigindo WhatsApp e e-mail.
+const COLUNA_ORIGEM = "alter table oculto_lista_vip add column if not exists origem text not null default 'site'";
+const WHATSAPP_OPCIONAL = 'alter table oculto_lista_vip alter column whatsapp drop not null';
 
 export class BancoIndisponivel extends Error {}
 
@@ -40,6 +45,8 @@ async function abrir(): Promise<Sql> {
   await sql(TABELA);
   await sql(COLUNA_EMAIL);
   await sql(COLUNA_PRESENCA);
+  await sql(COLUNA_ORIGEM);
+  await sql(WHATSAPP_OPCIONAL);
   return sql;
 }
 

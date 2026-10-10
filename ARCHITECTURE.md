@@ -42,10 +42,12 @@ public/
 Projeto "oculto" no Neon (us-east-1), Postgres 18. Uma tabela, criada no primeiro uso (`src/lib/db.ts`):
 
 ```sql
-oculto_lista_vip (id bigserial, nome text, whatsapp text unique, criado_em timestamptz, email text, presente_em timestamptz)
+oculto_lista_vip (id bigserial, nome text, whatsapp text unique [pode ser vazio], criado_em timestamptz, email text, presente_em timestamptz, origem text default 'site')
 ```
 
 `presente_em` vazio = ainda não chegou; preenchido = a hora em que a portaria tocou em CONFIRMAR (tocar duas vezes mantém a primeira hora). Colunas novas entram por `alter table ... add column if not exists` em `db.ts`: quem já está na lista não é tocado.
+
+`origem` diz de onde veio o nome: `site` (formulário) ou uma lista que entrou por fora, como exceção (`lista-lucas`). Só essas listas têm WhatsApp vazio; o formulário continua exigindo. Os nomes das origens ficam em `src/lib/origens.ts`, um arquivo sem banco, porque a tela da portaria roda no navegador e não pode importar `lista.ts` (que traz o banco junto).
 
 O WhatsApp é único: a mesma pessoa enviando duas vezes não duplica, só recebe "você já está na lista".
 

@@ -1,7 +1,8 @@
 // Regras da lista VIP: validar, gravar sem repetir, listar, confirmar presença e remover.
 import { banco } from './db';
 
-export type Convidado = { id: number; nome: string; whatsapp: string; email: string; criadoEm: string; /** hora em que a portaria confirmou a chegada; null = ainda não chegou */ presenteEm: string | null };
+/** `whatsapp` e `email` vêm vazios nos nomes de listas que entraram por fora (origem diferente de 'site'). */
+export type Convidado = { id: number; nome: string; whatsapp: string; email: string; origem: string; criadoEm: string; /** hora em que a portaria confirmou a chegada; null = ainda não chegou */ presenteEm: string | null };
 
 /** Nome com espaços arrumados e iniciais maiúsculas ("de", "da", "dos" ficam minúsculos). */
 export function arrumarNome(bruto: string): string {
@@ -37,7 +38,7 @@ export function arrumarEmail(bruto: string): string | null {
   return /^[a-z0-9._%+-]+@[a-z0-9-]+(.[a-z0-9-]+)*.[a-z]{2,}$/.test(e) && !e.includes('..') ? e : null;
 }
 
-export const mostrarWhatsapp = (d: string) => (d.length === 11 ? `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}` : `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`);
+export const mostrarWhatsapp = (d: string) => (!d ? '' : d.length === 11 ? `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}` : `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`);
 
 export type Entrada = { ok: true; nome: string; jaEstava: boolean } | { ok: false; erro: string };
 
@@ -64,8 +65,8 @@ export async function entrarNaLista(nome: string, whatsapp: string, email: strin
 
 export async function listar(): Promise<Convidado[]> {
   const sql = await banco();
-  const linhas = await sql('select id, nome, whatsapp, email, criado_em, presente_em from oculto_lista_vip order by lower(nome), id');
-  return linhas.map((l) => ({ id: Number(l.id), nome: String(l.nome), whatsapp: String(l.whatsapp), email: String(l.email ?? ''), criadoEm: new Date(l.criado_em as string).toISOString(), presenteEm: l.presente_em ? new Date(l.presente_em as string).toISOString() : null }));
+  const linhas = await sql('select id, nome, whatsapp, email, origem, criado_em, presente_em from oculto_lista_vip order by lower(nome), id');
+  return linhas.map((l) => ({ id: Number(l.id), nome: String(l.nome), whatsapp: String(l.whatsapp ?? ''), email: String(l.email ?? ''), origem: String(l.origem ?? 'site'), criadoEm: new Date(l.criado_em as string).toISOString(), presenteEm: l.presente_em ? new Date(l.presente_em as string).toISOString() : null }));
 }
 
 /** Marca a chegada. Tocar duas vezes não muda a hora: vale a primeira confirmação. */

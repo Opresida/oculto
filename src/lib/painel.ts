@@ -23,6 +23,8 @@ export type Resumo = {
   chegadas: Faixa[];
   porDia: Dia[];
   pico: Faixa | null;
+  /** nomes que entraram por fora do site (listas de exceção) e quantos deles vieram */
+  porFora: { inscritos: number; presentes: number };
   frases: string[];
 };
 
@@ -72,7 +74,11 @@ export function resumir(convidados: Convidado[]): Resumo {
   const limite = FECHA_LISTA.getTime();
   const ate23 = convidados.filter((c) => c.presenteEm && new Date(c.presenteEm).getTime() <= limite).length;
   const chegadas = chegadasPorFaixa(convidados);
-  const porDia = inscricoesPorDia(convidados);
+  // o gráfico por dia só faz sentido para quem se inscreveu pelo site: lista que entra por fora chega toda de uma vez
+  const doSite = convidados.filter((c) => c.origem === 'site');
+  const deFora = convidados.filter((c) => c.origem !== 'site');
+  const porFora = { inscritos: deFora.length, presentes: deFora.filter((c) => c.presenteEm).length };
+  const porDia = inscricoesPorDia(doSite);
   const pico = chegadas.reduce<Faixa | null>((m, f) => (f.valor > (m?.valor ?? 0) ? f : m), null);
 
   // as frases só afirmam o que os números sustentam; com pouca gente, ficam de fora
@@ -87,6 +93,10 @@ export function resumir(convidados: Convidado[]): Resumo {
         ? `Todos os presentes chegaram até as 23h, dentro da entrada gratuita.`
         : `${pessoas(ate23)} ${ate23 === 1 ? 'chegou' : 'chegaram'} até as 23h (entrada gratuita); ${pessoas(presentes - ate23)} depois.`,
     );
+    const presentesSite = doSite.filter((c) => c.presenteEm).length;
+    if (porFora.inscritos >= 5 && doSite.length >= 5) {
+      frases.push(`Das inscrições pelo site vieram ${Math.round((presentesSite / doSite.length) * 100)}%; das listas que entraram por fora, ${Math.round((porFora.presentes / porFora.inscritos) * 100)}%.`);
+    }
     const comparaveis = porDia.filter((d) => d.inscritos >= 5);
     if (comparaveis.length >= 2) {
       const melhor = comparaveis.reduce((m, d) => (d.presentes / d.inscritos > m.presentes / m.inscritos ? d : m));
@@ -94,7 +104,7 @@ export function resumir(convidados: Convidado[]): Resumo {
     }
   }
 
-  return { inscritos, presentes, ausentes: inscritos - presentes, taxa, ate23, depois23: presentes - ate23, chegadas, porDia, pico, frases };
+  return { inscritos, presentes, ausentes: inscritos - presentes, taxa, ate23, depois23: presentes - ate23, chegadas, porDia, pico, porFora, frases };
 }
 
 export const porcento = (taxa: number | null) => (taxa === null ? '—' : `${Math.round(taxa * 100)}%`);
