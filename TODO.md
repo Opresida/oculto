@@ -19,3 +19,4 @@
 - [x] 2026-10-09 · Atração bônus (Diego Henrique) na seção do line-up, em bloco próprio, sem mexer no trio do topo.
 - [x] 2026-10-09 · Lista Lucas (68 nomes, só nome) importada como exceção, com origem própria; portaria, planilha e painel mostram a origem.
 - [x] 2026-10-10 · Lista Renan (7) e Aniversário Mara Lima (27) importadas só com o nome; filtro por indicação na portaria e no painel; gráfico "Por indicação".
+- [x] 2026-10-11 · Mais nomes por indicação: +8 no Aniversário Mara Lima, +8 na Lista Renan e a nova Lista Ricardo (10).

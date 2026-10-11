@@ -15,7 +15,7 @@
 - Regra da lista: **entrada gratuita até as 23h** para quem está na lista.
 - O formulário aceita nomes **até domingo, 23h** (horário de Manaus). Depois fecha sozinho.
 - (2026-10-09) A portaria **confirma a presença** de cada nome, para comparar quem se inscreveu com quem de fato foi; o resultado aparece em gráficos no painel (`/lista/painel`).
-- **Listas por indicação** (só nome, sem WhatsApp nem e-mail) entram direto no banco, por script, **só quando o Humberto manda**, cada uma com sua origem: `lista-lucas` (68 nomes, 09/10, anotados antes de existir a lista digital), `lista-renan` (7) e `aniversario-mara-lima` (27, com a aniversariante; 10/10). Para o público a regra não muda: **entrada na lista só pelo site**, com nome, WhatsApp e e-mail. Não existe (e não é para existir) botão de "adicionar nome" na portaria.
+- **Listas por indicação** (só nome, sem WhatsApp nem e-mail) entram direto no banco, por script, **só quando o Humberto manda**, cada uma com sua origem: `lista-lucas` (68 nomes, 09/10, anotados antes de existir a lista digital), `lista-renan` (7 em 10/10 + 8 em 11/10), `aniversario-mara-lima` (27 com a aniversariante em 10/10 + 8 em 11/10) e `lista-ricardo` (10, em 11/10). Para o público a regra não muda: **entrada na lista só pelo site**, com nome, WhatsApp e e-mail. Não existe (e não é para existir) botão de "adicionar nome" na portaria.
 - (2026-10-10) A portaria e o painel têm **filtro por indicação** (Site e cada lista), e o painel mostra o gráfico "Por indicação" (pedido do Humberto: os dados das listas precisam aparecer no painel).
 - Front na Vercel, em **projeto novo**; banco **temporário** no Neon.
 - Repositório: `github.com/Opresida/oculto`.

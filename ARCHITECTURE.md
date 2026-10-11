@@ -47,7 +47,7 @@ oculto_lista_vip (id bigserial, nome text, whatsapp text unique [pode ser vazio]
 
 `presente_em` vazio = ainda não chegou; preenchido = a hora em que a portaria tocou em CONFIRMAR (tocar duas vezes mantém a primeira hora). Colunas novas entram por `alter table ... add column if not exists` em `db.ts`: quem já está na lista não é tocado.
 
-`origem` diz de onde veio o nome: `site` (formulário) ou uma lista por indicação que entrou por fora (`lista-lucas`, `lista-renan`, `aniversario-mara-lima`). Só essas listas têm WhatsApp vazio; o formulário continua exigindo. Os nomes e a ordem das origens (`ORIGENS`, `ORDEM_ORIGENS`, `origensPresentes`) ficam em `src/lib/origens.ts`, um arquivo sem banco, porque a tela da portaria roda no navegador e não pode importar `lista.ts` (que traz o banco junto).
+`origem` diz de onde veio o nome: `site` (formulário) ou uma lista por indicação que entrou por fora (`lista-lucas`, `lista-renan`, `aniversario-mara-lima`, `lista-ricardo`). Só essas listas têm WhatsApp vazio; o formulário continua exigindo. Os nomes e a ordem das origens (`ORIGENS`, `ORDEM_ORIGENS`, `origensPresentes`) ficam em `src/lib/origens.ts`, um arquivo sem banco, porque a tela da portaria roda no navegador e não pode importar `lista.ts` (que traz o banco junto).
 
 O WhatsApp é único: a mesma pessoa enviando duas vezes não duplica, só recebe "você já está na lista".
 
