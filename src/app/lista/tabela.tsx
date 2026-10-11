@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import type { Convidado } from '@/lib/lista';
-import { nomeDaOrigem } from '@/lib/origens';
+import { nomeDaOrigem, origensPresentes } from '@/lib/origens';
 import { confirmar, desfazer, removerDaLista } from './actions';
 
 const semAcento = (t: string) => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -13,6 +13,8 @@ const quando = (iso: string) => new Date(iso).toLocaleString('pt-BR', { timeZone
 const hora = (iso: string) => new Date(iso).toLocaleTimeString('pt-BR', { timeZone: 'America/Manaus', hour: '2-digit', minute: '2-digit' });
 
 type Filtro = 'todos' | 'faltam' | 'presentes';
+
+const chip = (ativo: boolean) => `rotulo shrink-0 cursor-pointer whitespace-nowrap border px-2.5 py-2 ${ativo ? 'border-prata-clara bg-prata-clara text-preto' : 'border-fumaca text-prata hover:border-prata-clara hover:text-luz'}`;
 
 /** Botão que mostra que o toque foi recebido: no 4G da porta, a resposta pode demorar um segundo. */
 function Enviar({ children, className, rotulo }: { children: React.ReactNode; className: string; rotulo: string }) {
@@ -24,28 +26,51 @@ function Enviar({ children, className, rotulo }: { children: React.ReactNode; cl
   );
 }
 
-/** Lista da portaria: busca enquanto digita (sem acento, por nome, telefone ou e-mail), filtro por situação e a confirmação de presença. */
+/**
+ * Lista da portaria: busca enquanto digita (sem acento, por nome, telefone ou e-mail), filtro por indicação
+ * (site ou cada lista que entrou por fora), filtro por situação e a confirmação de presença. A régua de presentes
+ * e as contagens acompanham a indicação escolhida.
+ */
 export function Tabela({ convidados }: { convidados: Convidado[] }) {
   const [busca, setBusca] = useState('');
   const [filtro, setFiltro] = useState<Filtro>('todos');
+  const [indicacao, setIndicacao] = useState<string>('todas');
   const router = useRouter();
-  const presentes = convidados.filter((c) => c.presenteEm).length;
+
+  const origens = useMemo(() => origensPresentes(convidados.map((c) => c.origem)), [convidados]);
+  const daIndicacao = useMemo(() => (indicacao === 'todas' ? convidados : convidados.filter((c) => c.origem === indicacao)), [convidados, indicacao]);
+  const presentes = daIndicacao.filter((c) => c.presenteEm).length;
   const filtrados = useMemo(() => {
     const b = semAcento(busca.trim());
     const digitos = b.replace(/\D/g, '');
-    return convidados.filter((c) => {
+    return daIndicacao.filter((c) => {
       if (filtro === 'faltam' && c.presenteEm) return false;
       if (filtro === 'presentes' && !c.presenteEm) return false;
       if (!b) return true;
       return semAcento(c.nome).includes(b) || (digitos.length >= 3 && c.whatsapp.includes(digitos)) || (b.length >= 3 && c.email.includes(b));
     });
-  }, [busca, filtro, convidados]);
+  }, [busca, filtro, daIndicacao]);
 
-  const filtros: [Filtro, string, number][] = [['todos', 'TODOS', convidados.length], ['faltam', 'FALTAM', convidados.length - presentes], ['presentes', 'PRESENTES', presentes]];
+  const filtros: [Filtro, string, number][] = [['todos', 'TODOS', daIndicacao.length], ['faltam', 'FALTAM', daIndicacao.length - presentes], ['presentes', 'PRESENTES', presentes]];
+  const pct = daIndicacao.length ? Math.round((presentes / daIndicacao.length) * 100) : 0;
 
   return (
     <>
-      <div className="sticky top-0 z-10 -mx-4 border-b border-grafite bg-preto/95 px-4 py-3 backdrop-blur sm:mx-0 sm:px-0">
+      {/* quantos já chegaram (da indicação escolhida): a régua enche a cada CONFIRMAR */}
+      <div role="img" aria-label={`${presentes} presentes de ${daIndicacao.length} inscritos`}>
+        <p className="rotulo flex justify-between text-prata">
+          <span>
+            <strong className="font-medium text-luz">{presentes}</strong> PRESENTES DE {daIndicacao.length}
+            {indicacao !== 'todas' && <span className="text-apoio"> · {nomeDaOrigem(indicacao).toUpperCase()}</span>}
+          </span>
+          <span className="text-luz">{daIndicacao.length ? `${pct}%` : '—'}</span>
+        </p>
+        <div className="mt-2 h-2 w-full rounded-[2px] bg-fumaca/50">
+          <div className="h-2 rounded-[2px] bg-prata-clara" style={{ width: `${pct}%` }} />
+        </div>
+      </div>
+
+      <div className="sticky top-0 z-10 -mx-4 mt-4 border-b border-grafite bg-preto/95 px-4 py-3 backdrop-blur sm:mx-0 sm:px-0">
         <div className="flex flex-wrap items-center gap-3">
           <input
             value={busca}
@@ -59,9 +84,22 @@ export function Tabela({ convidados }: { convidados: Convidado[] }) {
             ATUALIZAR
           </button>
         </div>
-        <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Mostrar">
+        {/* indicação: de onde veio o nome. No celular a linha rola de lado em vez de quebrar. */}
+        {origens.length > 1 && (
+          <div className="-mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0" role="group" aria-label="Indicação">
+            <button type="button" onClick={() => setIndicacao('todas')} aria-pressed={indicacao === 'todas'} className={chip(indicacao === 'todas')}>
+              TODAS {convidados.length}
+            </button>
+            {origens.map((o) => (
+              <button key={o} type="button" onClick={() => setIndicacao(o)} aria-pressed={indicacao === o} className={chip(indicacao === o)}>
+                {nomeDaOrigem(o).toUpperCase()} {convidados.filter((c) => c.origem === o).length}
+              </button>
+            ))}
+          </div>
+        )}
+        <div className="mt-2 flex flex-wrap gap-2" role="group" aria-label="Mostrar">
           {filtros.map(([id, nome, n]) => (
-            <button key={id} type="button" onClick={() => setFiltro(id)} aria-pressed={filtro === id} className={`rotulo cursor-pointer whitespace-nowrap border px-2.5 py-2 ${filtro === id ? 'border-prata-clara bg-prata-clara text-preto' : 'border-fumaca text-prata hover:border-prata-clara hover:text-luz'}`}>
+            <button key={id} type="button" onClick={() => setFiltro(id)} aria-pressed={filtro === id} className={chip(filtro === id)}>
               {nome} {n}
             </button>
           ))}
@@ -69,7 +107,7 @@ export function Tabela({ convidados }: { convidados: Convidado[] }) {
       </div>
 
       <p className="rotulo mt-4 text-fumaca">
-        {busca || filtro !== 'todos' ? `${filtrados.length} DE ${convidados.length}` : `${convidados.length} ${convidados.length === 1 ? 'NOME' : 'NOMES'} NA LISTA`}
+        {busca || filtro !== 'todos' || indicacao !== 'todas' ? `${filtrados.length} DE ${convidados.length}` : `${convidados.length} ${convidados.length === 1 ? 'NOME' : 'NOMES'} NA LISTA`}
       </p>
 
       <ul className="mt-3 divide-y divide-grafite border-y border-grafite">

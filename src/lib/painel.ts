@@ -2,6 +2,7 @@
 // Funções puras, sem banco: recebem a lista e devolvem os números e as frases que o painel mostra.
 import { FECHA_LISTA } from './evento';
 import type { Convidado } from './lista';
+import { nomeDaOrigem, origensPresentes } from './origens';
 
 /** Manaus é UTC−4 o ano todo (sem horário de verão): basta deslocar e ler em UTC. */
 const FUSO_MS = 4 * 3600 * 1000;
@@ -12,6 +13,7 @@ const DIAS_NA = ['no domingo', 'na segunda', 'na terça', 'na quarta', 'na quint
 
 export type Faixa = { rotulo: string; ate: string; valor: number };
 export type Dia = { rotulo: string; quando: string; inscritos: number; presentes: number };
+export type Indicacao = { origem: string; nome: string; inscritos: number; presentes: number };
 export type Resumo = {
   inscritos: number;
   presentes: number;
@@ -25,6 +27,8 @@ export type Resumo = {
   pico: Faixa | null;
   /** nomes que entraram por fora do site (listas de exceção) e quantos deles vieram */
   porFora: { inscritos: number; presentes: number };
+  /** inscritos e presentes de cada indicação: o site e cada lista que entrou por fora */
+  porOrigem: Indicacao[];
   frases: string[];
 };
 
@@ -79,6 +83,10 @@ export function resumir(convidados: Convidado[]): Resumo {
   const deFora = convidados.filter((c) => c.origem !== 'site');
   const porFora = { inscritos: deFora.length, presentes: deFora.filter((c) => c.presenteEm).length };
   const porDia = inscricoesPorDia(doSite);
+  const porOrigem: Indicacao[] = origensPresentes(convidados.map((c) => c.origem)).map((o) => {
+    const da = convidados.filter((c) => c.origem === o);
+    return { origem: o, nome: nomeDaOrigem(o), inscritos: da.length, presentes: da.filter((c) => c.presenteEm).length };
+  });
   const pico = chegadas.reduce<Faixa | null>((m, f) => (f.valor > (m?.valor ?? 0) ? f : m), null);
 
   // as frases só afirmam o que os números sustentam; com pouca gente, ficam de fora
@@ -93,9 +101,11 @@ export function resumir(convidados: Convidado[]): Resumo {
         ? `Todos os presentes chegaram até as 23h, dentro da entrada gratuita.`
         : `${pessoas(ate23)} ${ate23 === 1 ? 'chegou' : 'chegaram'} até as 23h (entrada gratuita); ${pessoas(presentes - ate23)} depois.`,
     );
-    const presentesSite = doSite.filter((c) => c.presenteEm).length;
-    if (porFora.inscritos >= 5 && doSite.length >= 5) {
-      frases.push(`Das inscrições pelo site vieram ${Math.round((presentesSite / doSite.length) * 100)}%; das listas que entraram por fora, ${Math.round((porFora.presentes / porFora.inscritos) * 100)}%.`);
+    // comparação entre indicações: só entre grupos com 5 nomes ou mais, para um nome a mais ou a menos não virar conclusão
+    const grupos = porOrigem.filter((g) => g.inscritos >= 5);
+    if (grupos.length >= 2) {
+      const melhor = grupos.reduce((m, g) => (g.presentes / g.inscritos > m.presentes / m.inscritos ? g : m));
+      frases.push(`Quem mais compareceu: ${melhor.nome}, com ${Math.round((melhor.presentes / melhor.inscritos) * 100)}% (${melhor.presentes} de ${melhor.inscritos}).`);
     }
     const comparaveis = porDia.filter((d) => d.inscritos >= 5);
     if (comparaveis.length >= 2) {
@@ -104,7 +114,7 @@ export function resumir(convidados: Convidado[]): Resumo {
     }
   }
 
-  return { inscritos, presentes, ausentes: inscritos - presentes, taxa, ate23, depois23: presentes - ate23, chegadas, porDia, pico, porFora, frases };
+  return { inscritos, presentes, ausentes: inscritos - presentes, taxa, ate23, depois23: presentes - ate23, chegadas, porDia, pico, porFora, porOrigem, frases };
 }
 
 export const porcento = (taxa: number | null) => (taxa === null ? '—' : `${Math.round(taxa * 100)}%`);

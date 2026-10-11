@@ -18,3 +18,4 @@
 - [x] 2026-10-09 · Presença na portaria: botão CONFIRMAR (e DESFAZER), filtro todos / faltam / presentes, régua de presentes, colunas novas na planilha e painel de comparecimento em `/lista/painel`. Banco: coluna `presente_em`, com cópia de segurança antes (branch `antes-presenca-2026-10-09` no Neon).
 - [x] 2026-10-09 · Atração bônus (Diego Henrique) na seção do line-up, em bloco próprio, sem mexer no trio do topo.
 - [x] 2026-10-09 · Lista Lucas (68 nomes, só nome) importada como exceção, com origem própria; portaria, planilha e painel mostram a origem.
+- [x] 2026-10-10 · Lista Renan (7) e Aniversário Mara Lima (27) importadas só com o nome; filtro por indicação na portaria e no painel; gráfico "Por indicação".

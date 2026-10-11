@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { BancoIndisponivel } from '@/lib/db';
 import { EVENTO, listaAberta } from '@/lib/evento';
 import { listar, type Convidado } from '@/lib/lista';
-import { porcento } from '@/lib/painel';
 import { logado, senhaConfigurada } from '@/lib/sessao';
 import { entrar, sair } from './actions';
 import { Tabela } from './tabela';
@@ -49,8 +48,6 @@ export default async function Lista({ searchParams }: { searchParams: Promise<{ 
     falha = e instanceof BancoIndisponivel ? 'O banco não está configurado (DATABASE_URL).' : 'Não consegui ler a lista agora. Toque em atualizar.';
   }
 
-  const presentes = convidados.filter((c) => c.presenteEm).length;
-
   return (
     <main className="mx-auto max-w-3xl px-4 pb-16 pt-8 sm:px-6">
       <header className="flex flex-wrap items-end justify-between gap-4">
@@ -76,19 +73,7 @@ export default async function Lista({ searchParams }: { searchParams: Promise<{ 
         <p className="mt-8 border border-fumaca px-4 py-6 text-prata-clara">{falha}</p>
       ) : (
         <>
-          {/* quantos já chegaram: a régua enche a cada CONFIRMAR */}
-          <div className="mt-6" role="img" aria-label={`${presentes} presentes de ${convidados.length} inscritos`}>
-            <p className="rotulo flex justify-between text-prata">
-              <span>
-                <strong className="font-medium text-luz">{presentes}</strong> PRESENTES DE {convidados.length}
-              </span>
-              <span className="text-luz">{porcento(convidados.length ? presentes / convidados.length : null)}</span>
-            </p>
-            <div className="mt-2 h-2 w-full rounded-[2px] bg-fumaca/50">
-              <div className="h-2 rounded-[2px] bg-prata-clara" style={{ width: `${convidados.length ? Math.round((presentes / convidados.length) * 100) : 0}%` }} />
-            </div>
-          </div>
-          <div className="mt-4"><Tabela convidados={convidados} /></div>
+          <div className="mt-6"><Tabela convidados={convidados} /></div>
         </>
       )}
     </main>
