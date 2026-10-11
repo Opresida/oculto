@@ -8,11 +8,12 @@ export const ORIGENS: Record<string, string> = {
   'lista-renan': 'Lista Renan',
   'aniversario-mara-lima': 'Aniversário Mara Lima',
   'lista-ricardo': 'Lista Ricardo',
+  'lista-lucao': 'Lista Lucão',
 };
 export const nomeDaOrigem = (o: string) => ORIGENS[o] ?? o;
 
 /** Ordem nos filtros e nos gráficos: o site primeiro, depois as listas na ordem em que chegaram. */
-export const ORDEM_ORIGENS = ['site', 'lista-lucas', 'lista-renan', 'aniversario-mara-lima', 'lista-ricardo'];
+export const ORDEM_ORIGENS = ['site', 'lista-lucas', 'lista-renan', 'aniversario-mara-lima', 'lista-ricardo', 'lista-lucao'];
 
 /** As origens que aparecem na lista, na ordem certa (uma origem nova, ainda sem lugar na ordem, vai para o fim). */
 export function origensPresentes(origens: string[]): string[] {
