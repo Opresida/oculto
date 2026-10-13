@@ -1,7 +1,8 @@
 import { EVENTO } from '@/lib/evento';
 
 // Fitas corridas, como nos vídeos: uma prata e uma preta, inclinadas, correndo em sentidos opostos.
-const TEXTO = [EVENTO.nome, `${EVENTO.dia} ${EVENTO.data}`, EVENTO.vespera, EVENTO.local.toUpperCase(), 'LISTA VIP ATÉ AS 23H'];
+// depois da festa (2026-10-12): saíram "LISTA VIP ATÉ AS 23H" e a véspera de feriado; entrou o obrigado.
+const TEXTO = [EVENTO.nome, 'OBRIGADO', `${EVENTO.dia} ${EVENTO.data}`, EVENTO.local.toUpperCase(), EVENTO.edicao];
 
 function Trilho({ clara, aoContrario }: { clara: boolean; aoContrario?: boolean }) {
   // o texto vai duas vezes: quando a primeira metade sai, a segunda ocupa o lugar e o laço não aparece

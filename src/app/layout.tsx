@@ -9,8 +9,8 @@ const archivo = Archivo({ variable: '--font-archivo', subsets: ['latin'], weight
 const jetbrains = JetBrains_Mono({ variable: '--font-jetbrains', subsets: ['latin'], weight: ['400', '500'] });
 const unbounded = Unbounded({ variable: '--font-unbounded', subsets: ['latin'], weight: ['900'] });
 
-const TITULO = 'O.C.U.L.T.O · Lista VIP · 11.10 no Allnight';
-const DESCRICAO = 'Domingo, 11.10, véspera de feriado, no Allnight. Coloque seu nome na lista VIP: entrada gratuita até as 23h.';
+const TITULO = 'O.C.U.L.T.O · Obrigado · 4ª edição no Allnight';
+const DESCRICAO = 'A 4ª edição do O.C.U.L.T.O aconteceu no domingo, 11.10, no Allnight. Obrigado a todo mundo que compareceu. A lista VIP está encerrada.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

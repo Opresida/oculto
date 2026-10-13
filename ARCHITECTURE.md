@@ -10,7 +10,7 @@ src/
   app/
     layout.tsx            fontes, metadados, camada de grão
     globals.css           cores do brandbook, classes da marca (.titulo, .rotulo, .prata, .grao, .revela, .acende)
-    page.tsx              a página: abertura → topo → fitas → line-up → lista → ingressos → rodapé
+    page.tsx              a página (pós-festa, desde 12/10): abertura → topo com o obrigado → fitas → quem tocou → agradecimento → rodapé
     opengraph-image.png   imagem que aparece ao compartilhar o link (1200×630)
     api/lista/route.ts    POST do formulário
     lista/                portaria: page.tsx (senha + lista), actions.ts (entrar, sair, tirar nome),
@@ -20,9 +20,9 @@ src/
     abertura.tsx          tela de entrada de 4 s (uma vez por visita); avisa "oculto:aberto" ao sair
     logo-vivo.tsx         roda a peça de motion da logo e escala para a largura disponível
     trio.tsx              os três artistas, com profundidade (mouse no computador, rolagem no celular)
-    contagem.tsx          contagem até o fechamento da lista
+    contagem.tsx          contagem até o fechamento da lista (fora de uso desde 12/10; fica para uma próxima edição)
     fita.tsx              duas fitas corridas cruzadas
-    form-lista.tsx        formulário, confirmação e estado de lista encerrada
+    form-lista.tsx        formulário, confirmação e estado de lista encerrada (fora de uso desde 12/10; fica para uma próxima edição)
     revela.tsx            entrada das seções ao chegar na tela
     rodape.tsx            Royals, Allnight, Lounge Sertanejo e a assinatura BrandSquad
   lib/

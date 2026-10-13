@@ -1,18 +1,15 @@
 import { Abertura } from '@/components/abertura';
-import { Contagem } from '@/components/contagem';
 import { Fitas } from '@/components/fita';
-import { FormLista } from '@/components/form-lista';
 import { LogoVivo } from '@/components/logo-vivo';
 import { Revela } from '@/components/revela';
 import { Rodape } from '@/components/rodape';
 import { Trio } from '@/components/trio';
-import { ARTISTAS, BONUS, EVENTO, INGRESSOS } from '@/lib/evento';
+import { ARTISTAS, BONUS, EVENTO } from '@/lib/evento';
 
-// Página do evento. Objetivo principal: nome na lista VIP. Objetivo secundário: venda de ingresso.
-// Ordem: abertura (4 s) → topo com os artistas e a contagem → fitas → line-up → lista → ingressos → assinaturas.
-
-const botaoCheio = 'titulo inline-flex items-center justify-center whitespace-nowrap bg-prata-clara px-6 py-5 text-sm text-preto transition-colors hover:bg-white';
-const botaoFio = 'titulo inline-flex items-center justify-center whitespace-nowrap border border-prata-clara px-6 py-5 text-sm text-luz transition-colors hover:bg-prata-clara hover:text-preto';
+// Página do evento DEPOIS da festa (pedido do Humberto em 2026-10-12): as inscrições saíram e no lugar entrou o
+// agradecimento a quem compareceu. Sem formulário, sem contagem e sem venda de ingresso.
+// Ordem: abertura (4 s) → topo com os artistas e o obrigado → fitas → quem tocou → agradecimento → assinaturas.
+// A versão com a lista aberta (formulário, contagem, ingressos) está no histórico do git, até o commit 481e566.
 
 export default function Pagina() {
   return (
@@ -47,19 +44,21 @@ export default function Pagina() {
             {/* a peça tem respiro dos lados; no computador puxa para alinhar com o texto */}
             <LogoVivo className="w-full max-w-[520px] lg:-ml-[9.5%]" />
             <p className="rotulo mt-6 text-prata">
-              {EVENTO.edicao} · {EVENTO.dia} {EVENTO.data} · {EVENTO.vespera}
+              {EVENTO.edicao} · {EVENTO.dia} {EVENTO.data} · {EVENTO.local.toUpperCase()}
             </p>
-            <h1 className="titulo prata mt-3 text-[clamp(3rem,13vw,6.5rem)]" style={{ filter: 'drop-shadow(0 8px 0 rgba(5,5,5,.85))' }}>
-              Lista VIP
+            <h1 className="titulo prata mt-3 text-[clamp(2.75rem,12vw,6rem)] lg:text-[4.5rem]" style={{ filter: 'drop-shadow(0 8px 0 rgba(5,5,5,.85))' }}>
+              Obrigado
             </h1>
             <p className="mt-5 max-w-md text-lg text-prata-clara">
-              Entrada gratuita até as {EVENTO.limiteLista} para quem está na lista. Coloque seu nome agora.
+              A {EVENTO.edicao.toLowerCase()} do {EVENTO.nome} aconteceu. Obrigado a cada pessoa que veio viver essa noite com a gente.
             </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <a href="#lista" className={botaoCheio}>ENTRAR NA LISTA VIP</a>
-              <a href={INGRESSOS} target="_blank" rel="noopener noreferrer" className={botaoFio}>COMPRAR INGRESSO ↗</a>
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+              <a href="#obrigado" className="titulo inline-flex items-center justify-center whitespace-nowrap bg-prata-clara px-6 py-5 text-sm text-preto transition-colors hover:bg-white">LER O AGRADECIMENTO</a>
+              <p className="rotulo flex items-center gap-2 text-apoio">
+                <span className="h-2 w-2 bg-prata-clara" aria-hidden />
+                LISTA VIP ENCERRADA
+              </p>
             </div>
-            <div className="mt-9"><Contagem /></div>
           </div>
           <div className="min-w-0"><Trio /></div>
         </div>
@@ -72,7 +71,7 @@ export default function Pagina() {
         <section className="mx-auto max-w-6xl px-5 py-16 sm:px-10 sm:py-24" aria-labelledby="lineup">
           <Revela>
             <p className="rotulo text-apoio">01 · LINE-UP</p>
-            <h2 id="lineup" className="titulo mt-3 text-4xl text-luz sm:text-6xl">Quem toca.</h2>
+            <h2 id="lineup" className="titulo mt-3 text-4xl text-luz sm:text-6xl">Quem tocou.</h2>
           </Revela>
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
             {/* o artista principal vem primeiro no celular e fica no meio no computador */}
@@ -104,7 +103,7 @@ export default function Pagina() {
                   {BONUS.selo}
                 </p>
                 <h3 className="titulo mt-3 text-3xl text-luz sm:text-5xl">{BONUS.nome}</h3>
-                <p className="mt-4 max-w-sm text-prata">Mais uma atração confirmada para o {EVENTO.dataExtenso}.</p>
+                <p className="mt-4 max-w-sm text-prata">A atração a mais da noite de {EVENTO.dataExtenso}.</p>
               </div>
               {/* overflow-clip (e não hidden): a foto é mais alta que a caixa, e uma caixa "hidden" ainda pode ser rolada por dentro */}
               <div className="relative order-1 h-80 overflow-clip sm:order-2 sm:h-[26rem]">
@@ -119,43 +118,47 @@ export default function Pagina() {
           </Revela>
         </section>
 
-        {/* ——— lista VIP ——— */}
-        <section id="lista" className="relative isolate scroll-mt-6 overflow-hidden border-y border-grafite" aria-labelledby="titulo-lista">
+        {/* ——— agradecimento (no lugar da lista VIP e dos ingressos) ——— */}
+        <section id="obrigado" className="relative isolate scroll-mt-6 overflow-hidden border-y border-grafite" aria-labelledby="titulo-obrigado">
           <div className="absolute inset-0 -z-10" aria-hidden>
             <div className="absolute inset-0 bg-cover bg-center opacity-50" style={{ backgroundImage: 'url(/img/neon.webp)' }} />
             <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, #050505 0%, rgba(5,5,5,.7) 50%, rgba(5,5,5,.88) 100%)' }} />
           </div>
           <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 sm:px-10 sm:py-24 lg:grid-cols-2 lg:gap-16">
             <Revela>
-              <p className="rotulo text-apoio">02 · LISTA VIP</p>
-              <h2 id="titulo-lista" className="titulo prata mt-3 text-4xl sm:text-6xl">Seu nome na lista.</h2>
+              <p className="rotulo text-apoio">02 · OBRIGADO</p>
+              <h2 id="titulo-obrigado" className="titulo prata mt-3 text-4xl sm:text-6xl">A noite foi de vocês.</h2>
               <ul className="mt-8 flex flex-col gap-5 text-lg text-prata-clara">
                 {[
-                  ['ENTRADA', `Gratuita até as ${EVENTO.limiteLista} para quem está na lista.`],
-                  ['QUANDO', `${EVENTO.dataExtenso.charAt(0).toUpperCase() + EVENTO.dataExtenso.slice(1)}, véspera de feriado.`],
-                  ['ONDE', `${EVENTO.local}, ${EVENTO.cidade}.`],
-                  ['PRAZO', `A lista aceita nomes até domingo, ${EVENTO.limiteLista}.`],
+                  ['PÚBLICO', 'A cada pessoa que compareceu e fez a pista acontecer.'],
+                  ['ARTISTAS', 'Flakkë, Jyou Guerra, DJ Bertolossi e Diego Henrique.'],
+                  ['CASA', `${EVENTO.local}, ${EVENTO.cidade}.`],
+                  ['APOIO', 'Lounge Sertanejo.'],
                 ].map(([rotulo, texto]) => (
                   <li key={rotulo} className="flex gap-4 border-t border-fumaca/60 pt-4">
-                    <span className="rotulo w-20 shrink-0 pt-1.5 text-apoio">{rotulo}</span>
+                    <span className="rotulo w-24 shrink-0 pt-1.5 text-apoio">{rotulo}</span>
                     <span>{texto}</span>
                   </li>
                 ))}
               </ul>
             </Revela>
-            <Revela atraso={120}><FormLista /></Revela>
+            <Revela atraso={120}>
+              <div className="border border-prata-clara bg-preto/70 p-6 sm:p-8">
+                <div className="pontos flex gap-2" aria-hidden>
+                  {[0, 1, 2, 3, 4].map((i) => <span key={i} className="h-3 w-3 bg-prata-clara" />)}
+                </div>
+                <p className="rotulo mt-6 text-apoio">LISTA VIP ENCERRADA</p>
+                <h3 className="titulo prata mt-2 text-3xl sm:text-4xl">Obrigado por ter vindo.</h3>
+                <p className="mt-5 text-prata">
+                  As inscrições da lista VIP estão fechadas. A lista valeu para a noite de {EVENTO.dataExtenso}, e quem colocou o nome e apareceu fez essa edição acontecer.
+                </p>
+                <p className="mt-4 text-prata">Em nome da {EVENTO.realizacao}: muito obrigado.</p>
+                <p className="rotulo mt-7 border-t border-fumaca/60 pt-5 text-prata-clara">
+                  {EVENTO.nome} · {EVENTO.edicao} · {EVENTO.data}
+                </p>
+              </div>
+            </Revela>
           </div>
-        </section>
-
-        {/* ——— ingressos ——— */}
-        <section className="mx-auto max-w-6xl px-5 py-16 text-center sm:px-10 sm:py-24" aria-labelledby="ingressos">
-          <Revela>
-            <p className="rotulo text-apoio">03 · INGRESSOS</p>
-            <h2 id="ingressos" className="titulo mx-auto mt-3 max-w-3xl text-4xl text-luz sm:text-6xl">Vai chegar depois das 23h?</h2>
-            <p className="mx-auto mt-5 max-w-md text-lg text-prata">Garanta seu ingresso e entre a qualquer hora.</p>
-            <a href={INGRESSOS} target="_blank" rel="noopener noreferrer" className={`${botaoCheio} mt-8`}>COMPRAR INGRESSO ↗</a>
-            <p className="rotulo mt-5 text-fumaca">VENDA PELO SHOP INGRESSOS</p>
-          </Revela>
         </section>
       </main>
 

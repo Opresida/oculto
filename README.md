@@ -19,11 +19,11 @@ para o repositório. Para abrir a portaria no computador: `LISTA_SENHA=uma-senha
 
 | Rota | O que é |
 |---|---|
-| `/` | Página do evento: abertura de 4 s, artistas, contagem, formulário da lista, ingressos |
+| `/` | Página do evento. Desde 12/10/2026 (depois da festa): abertura de 4 s, artistas e o agradecimento a quem compareceu; sem formulário, contagem ou ingressos |
 | `/lista` | Portaria: a lista de nomes, com busca, filtro por indicação e por situação, **confirmação de presença**, retirada de nome e planilha. Pede senha |
 | `/lista/painel` | Comparecimento: inscritos × presentes, por indicação, chegadas por horário, inscrições por dia e leituras em frases; filtro `?origem=` vale para a página toda. Mesma senha |
 | `/lista/csv` | Planilha da lista, com as colunas "Compareceu" e "Chegou em" (abre no Excel). Só com a portaria aberta |
-| `POST /api/lista` | Recebe nome + WhatsApp + e-mail do formulário |
+| `POST /api/lista` | Recebia nome + WhatsApp + e-mail do formulário; com a lista encerrada responde 410 |
 
 ## Publicar (Vercel)
 
@@ -39,7 +39,7 @@ Modelo das variáveis em `.env.example`.
 ## Estado
 
 - No ar: https://oculto-omega.vercel.app (portaria em `/lista`). Cada push na `main` publica sozinho.
-- Lista aceita nomes até **domingo 11.10.2026, 23h de Manaus**; depois disso o formulário fecha sozinho.
+- A festa aconteceu em 11.10.2026. A lista fechou às 23h de Manaus e, em 12/10, a página trocou as inscrições pelo **agradecimento** (a versão com a lista aberta está no git até o commit `481e566`).
 - Banco: projeto "oculto" no Neon (us-east-1). É temporário: ao fim do evento, baixar a planilha em `/lista` e apagar o projeto.
 
 Mais detalhes: `CONTEXT.md` (regras e decisões), `ARCHITECTURE.md` (mapa do código), `TODO.md`.

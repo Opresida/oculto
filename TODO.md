@@ -21,3 +21,5 @@
 - [x] 2026-10-10 · Lista Renan (7) e Aniversário Mara Lima (27) importadas só com o nome; filtro por indicação na portaria e no painel; gráfico "Por indicação".
 - [x] 2026-10-11 · Mais nomes por indicação: +8 no Aniversário Mara Lima, +8 na Lista Renan e a nova Lista Ricardo (10).
 - [x] 2026-10-11 (noite) · Nova Lista Lucão (10) e mais nomes nas listas Renan, Lucas e Ricardo.
+- [x] 2026-10-11 (noite) · Lista Ricardo fechou com 26 nomes; 11 nomes que estavam em lista por indicação e também pelo site foram unidos (ficou o cadastro do site, a presença acompanhou).
+- [x] 2026-10-12 · Depois da festa: inscrições fora da página, agradecimento no lugar (topo, fitas, seção "A noite foi de vocês", título e imagem de compartilhamento). Relatório da lista em PDF entregue ao Humberto.
