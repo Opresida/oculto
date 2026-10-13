@@ -46,13 +46,13 @@ export default function Pagina() {
             <p className="rotulo mt-6 text-prata">
               {EVENTO.edicao} · {EVENTO.dia} {EVENTO.data} · {EVENTO.local.toUpperCase()}
             </p>
-            <h1 className="titulo prata mt-3 text-[clamp(2.75rem,12vw,6rem)] lg:text-[4.5rem]" style={{ filter: 'drop-shadow(0 8px 0 rgba(5,5,5,.85))' }}>
+            <h1 className="titulo prata mt-3 text-[clamp(2.75rem,12vw,6rem)] lg:text-[clamp(2.5rem,5vw,4.5rem)]" style={{ filter: 'drop-shadow(0 8px 0 rgba(5,5,5,.85))' }}>
               Obrigado
             </h1>
-            <p className="mt-5 max-w-md text-lg text-prata-clara">
+            <p className="mt-5 max-w-md text-lg text-prata-clara lg:max-w-[21rem] xl:max-w-md">
               A {EVENTO.edicao.toLowerCase()} do {EVENTO.nome} aconteceu. Obrigado a cada pessoa que veio viver essa noite com a gente.
             </p>
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center lg:flex-col lg:items-start xl:flex-row xl:items-center">
               <a href="#obrigado" className="titulo inline-flex items-center justify-center whitespace-nowrap bg-prata-clara px-6 py-5 text-sm text-preto transition-colors hover:bg-white">LER O AGRADECIMENTO</a>
               <p className="rotulo flex items-center gap-2 text-apoio">
                 <span className="h-2 w-2 bg-prata-clara" aria-hidden />
